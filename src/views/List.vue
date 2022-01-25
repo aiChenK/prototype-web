@@ -29,18 +29,29 @@
       :header-row-class-name="headClassName"
       style="width: 100%"
     >
-      <el-table-column prop="ProjectName" label="所属产品" width="200"> </el-table-column>
-      <el-table-column prop="Name" label="项目名" width="300">
+      <el-table-column prop="projectName" label="所属产品" width="200"> </el-table-column>
+      <el-table-column prop="name" label="项目名" width="300">
         <template slot-scope="scope">
-          <el-button type="text" icon="el-icon-view" @click="jump(scope.row.Path)">{{scope.row.Name}}</el-button>
+          <el-button type="text" icon="el-icon-view" @click="jump(scope.row.path)">{{scope.row.name}}</el-button>
         </template>
       </el-table-column>
       <el-table-column label="迭代周期" :formatter="iterateFormatter" width="250"></el-table-column>
-      <el-table-column prop="CreateTime" label="创建时间" width="280" align="left"> </el-table-column>
-      <el-table-column prop="UpdateTime" label="最后更新时间" width="280" align="left"> </el-table-column>
-      <el-table-column prop="Operation" label="操作" >
+      <el-table-column prop="createTime" label="创建时间" width="280" align="left"> </el-table-column>
+      <el-table-column prop="updateTime" label="最后更新时间" width="280" align="left"> </el-table-column>
+      <el-table-column label="操作" >
         <template slot-scope="scope">
-          <el-button type="text" @click="jump(scope.row.Path)">去查看</el-button>
+          <el-button type="text" @click="jumpTo(scope.row.path)">去查看</el-button>
+          <!-- <el-button type="text" @click="testFun()">去查看</el-button> -->
+          <!-- <el-popconfirm
+            title="确定删除吗？"
+            icon="el-icon-info"
+            icon-color="red"
+            confirm-button-type="text"
+            @confirm="deleteById(scope.row.id)"
+            v-show="$store.state.isLogin"
+          >
+            <el-button slot="reference" type="text">删除</el-button>
+          </el-popconfirm> -->
         </template>
       </el-table-column>
     </el-table>
@@ -99,21 +110,21 @@ export default {
       this.params.page = page
       this.search()
     },
-    jump(url) {
-      location.href = url
-    },
     iterateFormatter(row, column, cellValue, index) {
       let start = '', end = ''
-      if (row.StartDate) {
-        let date = new Date(row.StartDate)
+      if (row.startDate) {
+        let date = new Date(row.startDate)
         start = (date.getMonth() + 1) + '月' + date.getDate() + '日'
       }
-      if (row.EndDate) {
-        let date = new Date(row.EndDate)
+      if (row.endDate) {
+        let date = new Date(row.endDate)
         end = (date.getMonth() + 1) + '月' + date.getDate() + '日'
       }
       
       return start + ' - ' + end
+    },
+    deleteById(id) {
+      this.$message.info("暂不支持 - " + id)
     }
   },
   mounted() {
