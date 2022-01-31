@@ -30,19 +30,19 @@
       style="width: 100%"
     >
       <el-table-column prop="projectName" label="所属产品" width="200"> </el-table-column>
-      <el-table-column prop="name" label="项目名" width="300">
+      <el-table-column prop="name" label="项目名">
         <template slot-scope="scope">
-          <el-button type="text" icon="el-icon-view" @click="jump(scope.row.path)">{{scope.row.name}}</el-button>
+          <el-button type="text" icon="el-icon-view" @click="jumpTo(scope.row.path)">{{scope.row.name}}</el-button>
         </template>
       </el-table-column>
-      <el-table-column label="迭代周期" :formatter="iterateFormatter" width="250"></el-table-column>
-      <el-table-column prop="createTime" label="创建时间" width="280" align="left"> </el-table-column>
-      <el-table-column prop="updateTime" label="最后更新时间" width="280" align="left"> </el-table-column>
+      <el-table-column label="迭代周期" :formatter="iterateFormatter" width="200"></el-table-column>
+      <el-table-column prop="createTime" label="创建时间" width="150" align="left"> </el-table-column>
+      <el-table-column prop="updateTime" label="最后更新时间" width="150" align="left"> </el-table-column>
       <el-table-column label="操作" >
         <template slot-scope="scope">
           <el-button type="text" @click="jumpTo(scope.row.path)">去查看</el-button>
           <!-- <el-button type="text" @click="testFun()">去查看</el-button> -->
-          <!-- <el-popconfirm
+          <el-popconfirm
             title="确定删除吗？"
             icon="el-icon-info"
             icon-color="red"
@@ -51,7 +51,7 @@
             v-show="$store.state.isLogin"
           >
             <el-button slot="reference" type="text">删除</el-button>
-          </el-popconfirm> -->
+          </el-popconfirm>
         </template>
       </el-table-column>
     </el-table>
@@ -78,7 +78,7 @@
 </template>
 
 <script>
-import {GET, POST} from '@/utils/http'
+import {GET, POST, DELETE} from '@/utils/http'
 export default {
   data() {
     return {
@@ -86,7 +86,6 @@ export default {
       total: 0,
       data: [],
       params: {
-        status: 1,
         page: 1,
         size: 10,
         projectName: ""
@@ -124,7 +123,10 @@ export default {
       return start + ' - ' + end
     },
     deleteById(id) {
-      this.$message.info("暂不支持 - " + id)
+      DELETE('/api/prototype', {ids: id}, {successMsg: "删除成功!"})
+        .then(res => {
+          this.search()
+        })
     }
   },
   mounted() {

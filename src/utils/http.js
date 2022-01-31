@@ -17,6 +17,13 @@ export function POST(url, params, option = {}, config = {}){
     return fetch(url, 'post', option, config)
 }
 
+export function DELETE(url, params, option = {}, config = {}){
+    if (params) {
+        config.params = params
+    }
+    return fetch(url, 'delete', option, config)
+}
+
 // 统一请求
 function fetch(url, method, option, config) {
     config.url = url
