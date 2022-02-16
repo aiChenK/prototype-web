@@ -41,7 +41,7 @@
       <el-table-column label="操作" >
         <template slot-scope="scope">
           <el-button type="text" @click="jumpTo(scope.row.path)">去查看</el-button>
-          <!-- <el-button type="text" @click="testFun()">去查看</el-button> -->
+          <el-button type="text" v-show="$store.state.isLogin" @click="openDrawer(scope.row)">编辑</el-button>
           <el-popconfirm
             title="确定删除吗？"
             icon="el-icon-info"
@@ -74,11 +74,20 @@
         <el-button v-if="$store.state.isLogin" type="success" size="small" plain round @click="$router.push({name: 'upload'})">去上传</el-button>
       </el-col>
     </el-row>
+
+    <el-drawer
+      :title="editData.name"
+      :visible.sync="editDrawer"
+      direction="rtl"
+      size="50%">
+      <RecordForm :editData="editData" @closeDrawer="closeDrawer" @search="search" style="margin:20px;"></RecordForm>
+    </el-drawer>
   </div>
 </template>
 
 <script>
 import {GET, POST, DELETE} from '@/utils/http'
+import RecordForm from '@/views/components/RecordForm'
 export default {
   data() {
     return {
@@ -89,11 +98,15 @@ export default {
         page: 1,
         size: 10,
         projectName: ""
-      }
+      },
+      editData: {
+        id: 0,
+        name: ''
+      },
+      editDrawer: false
     };
   },
   methods: {
-    headClass() {},
     search() {
       GET('/api/prototype', this.params)
         .then(res => {
@@ -127,11 +140,21 @@ export default {
         .then(res => {
           this.search()
         })
+    },
+    openDrawer(row) {
+      this.editDrawer = true
+      this.editData = row
+    },
+    closeDrawer() {
+      this.editDrawer = false
     }
   },
   mounted() {
     this.search()
   },
+  components: {
+    RecordForm
+  }
 };
 </script>
 

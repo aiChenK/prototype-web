@@ -24,6 +24,13 @@ export function DELETE(url, params, option = {}, config = {}){
     return fetch(url, 'delete', option, config)
 }
 
+export function PATCH(url, params, option = {}, config = {}){
+    if (params) {
+        config.data = params
+    }
+    return fetch(url, 'patch', option, config)
+}
+
 // 统一请求
 function fetch(url, method, option, config) {
     config.url = url
