@@ -194,6 +194,14 @@ export default {
       Object.assign(this.prototype, this.editData);
     }
   },
+//   watch: {
+//     //可使用watch触发
+//     editData: function (new, old) {
+//       this.prototypeId = this.editData.id;
+//       this.useOutsidePath = this.editData.path.indexOf("http") === 0;
+//       Object.assign(this.prototype, this.editData);
+//     }
+//   },
 };
 </script>
 

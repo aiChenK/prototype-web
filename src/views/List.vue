@@ -36,8 +36,8 @@
         </template>
       </el-table-column>
       <el-table-column label="迭代周期" :formatter="iterateFormatter" width="200"></el-table-column>
-      <el-table-column prop="createTime" label="创建时间" width="150" align="left"> </el-table-column>
-      <el-table-column prop="updateTime" label="最后更新时间" width="150" align="left"> </el-table-column>
+      <el-table-column prop="createTime" label="创建时间" width="200" align="left"> </el-table-column>
+      <el-table-column prop="updateTime" label="最后更新时间" width="200" align="left"> </el-table-column>
       <el-table-column label="操作" >
         <template slot-scope="scope">
           <el-button type="text" @click="jumpTo(scope.row.path)">去查看</el-button>
@@ -49,8 +49,9 @@
             confirm-button-type="text"
             @confirm="deleteById(scope.row.id)"
             v-show="$store.state.isLogin"
+            style="margin-left: 10px;"
           >
-            <el-button slot="reference" type="text">删除</el-button>
+            <el-button slot="reference" type="text" style="color:red;">删除</el-button>
           </el-popconfirm>
         </template>
       </el-table-column>
@@ -79,6 +80,7 @@
       :title="editData.name"
       :visible.sync="editDrawer"
       direction="rtl"
+      destroy-on-close
       size="50%">
       <RecordForm :editData="editData" @closeDrawer="closeDrawer" @search="search" style="margin:20px;"></RecordForm>
     </el-drawer>
