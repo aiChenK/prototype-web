@@ -20,6 +20,40 @@
             >
           </el-option>
         </el-select>
+
+        <el-select 
+          placeholder="选择团队" 
+          v-model="params.team"
+          filterable
+          clearable
+          size="small"
+          @change="search"
+        >
+          <el-option
+            v-for="(item, index) in $store.state.teams"
+            :key="index"
+            :label="item.name"
+            :value="item.id"
+            >
+          </el-option>
+        </el-select>
+
+        <el-select 
+          placeholder="标签" 
+          v-model="params.tag"
+          filterable
+          clearable
+          size="small"
+          @change="search"
+        >
+          <el-option
+            v-for="(item, index) in $store.state.tags"
+            :key="index"
+            :label="item.name"
+            :value="item.id"
+            >
+          </el-option>
+        </el-select>
       </el-col>
     </el-row>
     <!-- 表格 -->
@@ -33,6 +67,32 @@
       <el-table-column prop="name" label="项目名">
         <template slot-scope="scope">
           <el-button type="text" icon="el-icon-view" @click="jumpTo(scope.row.path)">{{scope.row.name}}</el-button>
+        </template>
+      </el-table-column>
+      <el-table-column label="所属团队">
+        <template slot-scope="scope">
+          <el-tag
+            size="small"
+            :disable-transitions="true"
+            v-for="item in scope.row.team"
+            :type="tagType[item.id % 4]"
+            :key="item.id"
+          >
+          {{item.name}}
+          </el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="标签">
+        <template slot-scope="scope">
+          <el-tag
+            size="small"
+            :disable-transitions="true"
+            v-for="item in scope.row.tag"
+            :type="tagType[item.id % 4]"
+            :key="item.id"
+          >
+          {{item.name}}
+          </el-tag>
         </template>
       </el-table-column>
       <el-table-column label="迭代周期" :formatter="iterateFormatter" width="200"></el-table-column>
@@ -105,7 +165,13 @@ export default {
         id: 0,
         name: ''
       },
-      editDrawer: false
+      editDrawer: false,
+      tagType: [
+        'success',
+        'info',
+        'warning',
+        'error'
+      ]
     };
   },
   methods: {
@@ -177,5 +243,10 @@ export default {
   height: 80px;
   line-height: 80px;
   background-color: #fff;
+}
+.el-tag {
+  margin-right: 10px;
+  margin-top: 3px;
+  margin-bottom: 3px;
 }
 </style>

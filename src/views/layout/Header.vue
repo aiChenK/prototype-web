@@ -75,7 +75,7 @@ export default {
   },
   mounted() {
     this.checkLogin()
-    this.$store.dispatch('getProjects')
+    this.$store.dispatch('initState')
   },
   computed: {
     checkIsLogin() {

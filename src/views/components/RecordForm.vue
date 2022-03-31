@@ -33,6 +33,48 @@
       ></el-input>
     </el-form-item>
 
+    <el-form-item label="所属团队" prop="team">
+      <el-select
+        placeholder="选择团队（可输入）"
+        v-model="prototype.team"
+        allow-create
+        multiple
+        filterable
+        clearable
+        :disabled="!!prototypeId"
+        style="width: 100%"
+      >
+        <el-option
+          v-for="(item, index) in $store.state.teams"
+          :key="index"
+          :label="item.name"
+          :value="item.id"
+        >
+        </el-option>
+      </el-select>
+    </el-form-item>
+
+    <el-form-item label="标签" prop="tag">
+      <el-select
+        placeholder="输入标签"
+        v-model="prototype.tag"
+        allow-create
+        multiple
+        filterable
+        clearable
+        :disabled="!!prototypeId"
+        style="width: 100%"
+      >
+        <el-option
+          v-for="(item, index) in $store.state.tags"
+          :key="index"
+          :label="item.name"
+          :value="item.id"
+        >
+        </el-option>
+      </el-select>
+    </el-form-item>
+
     <el-form-item label="迭代周期">
       <el-col :span="11">
         <el-date-picker
@@ -116,6 +158,8 @@ export default {
         path: "",
         startDate: null,
         endDate: null,
+        team: [],
+        tag: []
       },
       rules: {
         name: [
@@ -164,13 +208,13 @@ export default {
             //创建
             POST("/api/prototype", this.prototype).then((res) => {
                 this.resetForm();
-                this.$store.dispatch("getProjects");
+                this.$store.dispatch("initState");
                 this.$router.push({ name: "list" });
             });
         } else {
             //编辑
             PATCH("/api/prototype/" + this.prototypeId, this.prototype).then((res) => {
-                this.$store.dispatch("getProjects");
+                this.$store.dispatch("initState");
                 this.$emit('search')
                 this.$emit('closeDrawer')
             });
@@ -180,7 +224,7 @@ export default {
     resetForm() {
       this.$refs.form.resetFields();
       this.$refs.upload.clearFiles();
-    },
+    }
   },
   computed: {
     showFileUpload() {
@@ -192,6 +236,9 @@ export default {
       this.prototypeId = this.editData.id;
       this.useOutsidePath = this.editData.path.indexOf("http") === 0;
       Object.assign(this.prototype, this.editData);
+      //处理标签
+      this.prototype.team = Array.from(this.prototype.team,x=>x.id)
+      this.prototype.tag = Array.from(this.prototype.tag,x=>x.id)
     }
   },
 //   watch: {
