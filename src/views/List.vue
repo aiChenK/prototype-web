@@ -63,10 +63,10 @@
       :header-row-class-name="headClassName"
       style="width: 100%"
     >
-      <el-table-column prop="projectName" label="所属产品" width="200"> </el-table-column>
+      <el-table-column prop="projectName" label="所属产品" width="170"> </el-table-column>
       <el-table-column prop="name" label="项目名">
         <template slot-scope="scope">
-          <el-button type="text" icon="el-icon-view" @click="jumpTo(scope.row.path)">{{scope.row.name}}</el-button>
+          <el-button type="text" :title="scope.row.name" class="view-project-name" icon="el-icon-view" @click="jumpTo(scope.row.path)">{{scope.row.name}}</el-button>
         </template>
       </el-table-column>
       <el-table-column label="所属团队">
@@ -95,9 +95,9 @@
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="迭代周期" :formatter="iterateFormatter" width="200"></el-table-column>
-      <el-table-column prop="createTime" label="创建时间" width="200" align="left"> </el-table-column>
-      <el-table-column prop="updateTime" label="最后更新时间" width="200" align="left"> </el-table-column>
+      <el-table-column label="迭代周期" :formatter="iterateFormatter" width="160"></el-table-column>
+      <el-table-column prop="createTime" label="创建时间" width="160" align="left"> </el-table-column>
+      <el-table-column prop="updateTime" label="最后更新时间" width="160" align="left"> </el-table-column>
       <el-table-column label="操作" >
         <template slot-scope="scope">
           <el-button type="text" @click="jumpTo(scope.row.path)">去查看</el-button>
@@ -249,4 +249,12 @@ export default {
   margin-top: 3px;
   margin-bottom: 3px;
 }
+.view-project-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width:100%;
+  text-align: left;
+}
+
 </style>
